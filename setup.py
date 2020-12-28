@@ -1,5 +1,5 @@
 from setuptools import setup, find_packages
-from scripts.__version__ import __version__
+from scripts.__info__ import __version__
 
 setup(
     name="Youtube_to_mp3",
@@ -16,5 +16,6 @@ setup(
         "click>=7.1.2,<8.0.0",
         "pydub>=0.24.1,<1.0.0",
         "pytube>=10.1.0,<11.0.0",
+        "validators>=0.18.2, <1.0.0"
     ]
 )

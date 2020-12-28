@@ -19,12 +19,12 @@ AUDIO_EXTENSIONS = [
 AUDIO_EXTENSIONS_SET = set(AUDIO_EXTENSIONS)
 
 # Convert the files in the input_directory and place them in the output_directory
-def convert(config: Config, input_directory: str, output_directory: str, output_format: str, workers: int):
+def convert(config: Config, output_format: str, workers: int):
     logger = config.logger
-    logger.info("Starting conversion of {}.".format(input_directory))
+    logger.info("Starting conversion of {}.".format(config.export_path))
 
-    input_path = Path(input_directory)
-    output_path = Path(output_directory)
+    input_path = Path(config.export_path)
+    output_path = Path(config.export_path)
 
     if not output_path.exists():
         logger.verbose(

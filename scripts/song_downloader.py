@@ -33,6 +33,7 @@ def download_from_file(file_path: str, config: Config):
 
 # Just a dumb wrapper around the download function
 def download_from_link(link: str, config: Config):
+    config.logger.verbose("Starting link download...", config.verbose)
     dlconfig = DLConfig(link, config)
     download(dlconfig)
 
@@ -42,9 +43,9 @@ def download(dlconfig: DLConfig):
         logger = dlconfig.config.logger
         yt = pytube.YouTube(dlconfig.link)
         logger.info("Downloading <= '{}'".format(yt.title))
-        if not Path(dlconfig.config.yt_dl_path).exists():
-            Path(dlconfig.config.yt_dl_path).mkdir(exist_ok=True)
-        yt.streams.first().download(output_path=dlconfig.config.yt_dl_path)
+        if not Path(dlconfig.config.export_path).exists():
+            Path(dlconfig.config.export_path).mkdir(exist_ok=True)
+        yt.streams.first().download(output_path=dlconfig.config.export_path)
         logger.success("Downloaded : '{}'".format(yt.title))
-    except Exception as e:
-        logger.error("Download Failed:\n{}".format(e))
+    except Exception:
+        logger.error("Download Failed: '{}' is an invalid link.".format(dlconfig.link))
