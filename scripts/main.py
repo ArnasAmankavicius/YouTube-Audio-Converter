@@ -18,11 +18,11 @@ def setupParser():
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
         description=__description__, 
         epilog=__epilog__)
-    parser.add_argument('--version', action="version", version="%(prog)s {}".format(__version__), help="Display version information")
+    parser.add_argument('--version', action="version", version="%(prog)s {}".format(__version__), help="Display version information.")
     parser.add_argument('links', type=str, help="Specify a file or a link to download from.")
-    parser.add_argument('-w', dest="workers", default=5, type=int, help='Amount of processes to create for audio conversion (default: 5)')
+    parser.add_argument('-w', dest="workers", default=5, type=int, help='Amount of processes to create for audio conversion (default: 5).')
     parser.add_argument('-v', '--verbose', action='store_true', help='Enable verbose for debugging purposes.')
-    parser.add_argument('-e', dest="export_path", type=str, help='Path where to convert the downloaded audio')
+    parser.add_argument('-e', dest="export_path", type=str, help='Path where to convert the downloaded video files.')
     return parser.parse_args()
 
 # Paste the link

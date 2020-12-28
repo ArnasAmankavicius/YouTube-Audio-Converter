@@ -42,20 +42,24 @@ This will both install the required prerequisites and launch the application.
 You can print out help by typing `audiodl -h`
 ```zsh
 ❯ audiodl -h
-usage: audiodl [-h] [-w WORKERS] [-v] songs_file export_path
+usage: audiodl [-h] [--version] [-w WORKERS] [-v] [-e EXPORT_PATH] links
 
 Download and convert YouTube video content to specified audio formats
 
 positional arguments:
-  songs_file            Path to the file containing all of the YouTube links
-  export_path           Path where to convert the downloaded audio
+  links           Specify a file or a link to download from.
 
 optional arguments:
-  -h, --help            show this help message and exit
-  -w WORKERS, --workers WORKERS
-                        Amount of processes to create for audio conversion
-                        (default: 5)
-  -v, --verbose         Enable verbose for debugging purposes.
+  -h, --help      show this help message and exit
+  --version       Display version information
+  -w WORKERS      Amount of processes to create for audio conversion (default: 5).
+  -v, --verbose   Enable verbose for debugging purposes.
+  -e EXPORT_PATH  Path where to convert the downloaded video files.
+```
+
+To download, save, and convert a specific video link to the current directory, you can do as follows:
+```
+audiodl "https://www.youtube.com/watch?v="
 ```
 
 To set the videos that are needed create a text file and add the links seperating each link by a new line:
