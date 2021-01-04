@@ -10,7 +10,7 @@ class ConversionJob(object):
         verbose: bool,
         output_path: Path,
         file_path: Path,
-        logger: Optional[Logger] = None
+        logger: Logger = None
     ):
         self.output_format = output_format
         self.verbose = verbose

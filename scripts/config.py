@@ -1,5 +1,5 @@
 from logger import Logger
-class Config(object):
+class Config():
     __slots__ = ["verbose", "logger", "export_path", "workers", "out_format"]
 
     # General configuration options

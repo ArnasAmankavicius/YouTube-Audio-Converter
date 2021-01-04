@@ -6,7 +6,12 @@
         {
             "label": "Build & Install",
             "type": "shell",
-            "command": "./build.sh"
+            "command": "pylint -E --disable=E0401 scripts/*.py && sudo ./build.sh",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         }
     ]
 }

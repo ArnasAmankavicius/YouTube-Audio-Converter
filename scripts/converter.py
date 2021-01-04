@@ -1,5 +1,5 @@
-from logger import Logger
 from pydub import AudioSegment
+from logger import Logger
 from multiprocessing import Pool
 from typing import Sequence
 from config import Config
@@ -31,9 +31,8 @@ def convert(config: Config, output_format: str, workers: int):
             "Creating output directory {}".format(output_path.as_posix()),
             config.verbose
         )
-        output_path.mkdir(exist_ok=True)
-    
-    audio_files = get_audio_files(input_path)
+        output_path.mkdir(exist_ok=True)    
+    audio_files = get_audio_files_local_dir(input_path)
     audio_files = [
         ConversionJob(
             output_format = output_format,
@@ -54,10 +53,23 @@ def convert(config: Config, output_format: str, workers: int):
 def get_audio_files(input_path: Path) -> Sequence[Path]:
     audio_files = []
     for input_file in input_path.iterdir():
-        if input_file.is_file() and input_file.suffix.lower() in AUDIO_EXTENSIONS_SET:
-            audio_files.append(input_file)
-        elif input_file.is_dir() and not input_file.is_symlink():
-            audio_files.extend(get_audio_files(input_file))
+        try:
+            if input_file.is_file() and input_file.suffix.lower() in AUDIO_EXTENSIONS_SET:
+                audio_files.append(input_file)
+            elif input_file.is_dir() and not input_file.is_symlink():
+                audio_files.extend(get_audio_files(input_file))
+        except PermissionError:
+            pass
+    return audio_files
+
+def get_audio_files_local_dir(input_path: Path) -> Sequence[Path]:
+    audio_files = []
+    for input_file in input_path.iterdir():
+        try:
+            if input_file.is_file() and input_file.suffix.lower() in AUDIO_EXTENSIONS_SET:
+                audio_files.append(input_file)
+        except PermissionError:
+            pass # Cannot access that specific file
     return audio_files
 
 def converter(conversion_job: ConversionJob):
