@@ -32,7 +32,7 @@ def convert(config: Config, output_format: str, workers: int):
             config.verbose
         )
         output_path.mkdir(exist_ok=True)    
-    audio_files = get_audio_files_local_dir(input_path)
+    audio_files = get_audio_files_local_dir(input_path, logger)
     audio_files = [
         ConversionJob(
             output_format = output_format,
@@ -50,6 +50,7 @@ def convert(config: Config, output_format: str, workers: int):
 
 # Recursively search for files in the given input_path
 # TODO Make sure that already converted files would not be converted again.
+# TODO implement directory depth check so that the conversion would not go further than a selected folders
 def get_audio_files(input_path: Path) -> Sequence[Path]:
     audio_files = []
     for input_file in input_path.iterdir():
@@ -62,14 +63,15 @@ def get_audio_files(input_path: Path) -> Sequence[Path]:
             pass
     return audio_files
 
-def get_audio_files_local_dir(input_path: Path) -> Sequence[Path]:
+def get_audio_files_local_dir(input_path: Path, logger: Logger) -> Sequence[Path]:
     audio_files = []
     for input_file in input_path.iterdir():
         try:
             if input_file.is_file() and input_file.suffix.lower() in AUDIO_EXTENSIONS_SET:
                 audio_files.append(input_file)
-        except PermissionError:
-            pass # Cannot access that specific file
+        except PermissionError as e:
+            logger.error("'{}' Permission denied.".format(e.strerror))
+            continue
     return audio_files
 
 def converter(conversion_job: ConversionJob):
@@ -78,7 +80,6 @@ def converter(conversion_job: ConversionJob):
     # Conversion specific data
     output_format = conversion_job.output_format[1:]
     output_path = conversion_job.output_path
-    # verbose_flag = conversion_job.verbose
 
     # File specific data
     audio_file = conversion_job.file_path

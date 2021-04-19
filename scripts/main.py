@@ -3,7 +3,6 @@ import sys
 import argparse
 sys.path.append(os.path.dirname(__file__)) # Temporary fix for the ModuleNotFoundError for custom modules
 
-import click
 from validators import url
 from converter import convert as conv
 from pathlib import Path
@@ -30,7 +29,7 @@ def convert():
     args = setupParser()
 
     logger = Logger()
-    verbose_flag = args.verbose_flag
+    verbose_flag = args.verbose
     
     logger.verbose("Checking if export path has been specified", verbose_flag)
     if args.export_path == None:
